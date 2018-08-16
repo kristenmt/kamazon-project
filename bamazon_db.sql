@@ -1,15 +1,15 @@
 -- Make Database -- 
-CREATE DATABASE bamazon-cust_db; 
+CREATE DATABASE bamazon_cust_db; 
 -- Makes it so all of the following code will affect db -- 
-USE bamazon-cust_db; 
+USE bamazon_cust_db; 
 -- Making Table called auction -- 
 CREATE TABLE products ( 
     id INT NOT NULL AUTO_INCREMENT,
     item_id INTEGER NOT NULL, 
     product_name VARCHAR(225) NOT NULL, 
     department_name VARCHAR(225), 
-    price INTEGER() NOT NULL, 
-    stock_quantity INTEGER() NOT NULL,
+    price INTEGER(100) NOT NULL, 
+    stock_quantity INTEGER(100) NOT NULL,
     PRIMARY KEY (id)
 );
 
