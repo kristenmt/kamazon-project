@@ -1,3 +1,6 @@
+-- Drop Database if a previous exists --
+DROP DATABASE IF EXISTS bamazon_cust_db;
+
 -- Make Database -- 
 CREATE DATABASE bamazon_cust_db; 
 -- Makes it so all of the following code will affect db -- 
@@ -8,7 +11,7 @@ CREATE TABLE products (
     item_id INTEGER NOT NULL, 
     product_name VARCHAR(225) NOT NULL, 
     department_name VARCHAR(225), 
-    price INTEGER(100) NOT NULL, 
+    price DECIMAL(100,2) NOT NULL, 
     stock_quantity INTEGER(100) NOT NULL,
     PRIMARY KEY (id)
 );

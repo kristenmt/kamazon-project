@@ -12,7 +12,7 @@ var connection = mysql.createConnection({
   user: "root",
 
   // Your password
-  password: "",
+  password: "root",
   database: "bamazon_cust_DB"
 });
 
@@ -20,7 +20,7 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   //go into the connection object and get the id
-  console.log("connected as id " + connection.threadId);
+  //console.log("connected as id " + connection.threadId);
   
   // function to show all items for sale to the customer when file opened
  
