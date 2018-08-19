@@ -22,48 +22,78 @@ connection.connect(function(err) {
   //go into the connection object and get the id
   //console.log("connected as id " + connection.threadId);
   
-  // function to show all items for sale to the customer when file opened
- 
+  // calls the function to show all items for sale to the customer when file opened
  queryForSale();
   
 });
-
+//function to show all items for sale
 function queryForSale() {
     connection.query("SELECT * FROM products", function(err, res) {
-    //   for (var i = 0; i < res.length; i++){
-    //       console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].price);
-          
-    //   }
-    //   console.log("-------------------------");
-    //   connection.end();
+    // shows all items for sale in a table format
     console.table(res);
+    
+    //calls the function to ask the item id of product customer wants to purchase
     productPurchase();
     });
     }
-
+//function to ask customer what he/she wants to purchase
     function productPurchase(){
         inquirer
         .prompt([{
+            //format and question #1 to ask customer--the id number
             name: "askID",
             type: "input",
             message: "What is the ID of the product you wish to purchase?"
         },
         {
+            //format and question #2 to ask customer--the quantity
             name: "quantity",
             type: "input",
-            message: "How many do you want to buy?"
+            message: "How many do you want to buy?",
+            validate: function(value) {
+                if (isNaN(value) === false) {
+                  return true;
+                }
+                return false;
+              }
         }
         
         ])
+        //function to run after the inquiry
      .then(function(answer){
-            var query = "SELECT item_id, product_name, price FROM products WHERE ?";
-            connection.query(query, {products: answer.products }, function(err, res){
+         //this is what will be pulled from the database and stored in a variable based on customer's answers to questions 1 & 2
+            //var query = "SELECT * FROM products WHERE item_id=?" + answer.quantity;
+           // console.log("stock answer");
+            connection.query("SELECT * FROM products WHERE item_id=?", answer.quantity, function(err, res){
                 for (var i = 0; i < res.length; i++){
-                    console.log("Item ID: " + res[i].item_id + " || Product name: " + res[i].product_name + " || Price: " + res[i].price);
-                    
+                    if (answer.quantity > res[i].stock_quantity){
+                        console.log("Sorry, we don't have enough in stock. Please try again.");
+                   // productPurchase();
+                    }
+                    else {
+                        console.log("Excellent! We can fulfill your order.");
+                        console.log("Your total is: " + res[i].price * answer.quantity + ".");
+                        
+                        
+                    }
                 }
             })
-        })
+            //connection.query(query, function(err, res){
+              //  var stockQuantity = res[i].stock_quantity;
+                //var userQuantity = answer.quantity;
+                //console.log("stock answer 2");
+               // if (userQuantity < stockQuantity){
+                 //   for (var i = 0; i < res.length; i++){
+                        
+                   // }
+                    
+                //}
+                //else{
+                  //  console.log("Sorry, we don't have enough in stock. Please try again.");
+                   // productPurchase();
+                //}
+           // })
+        });
     }
     //FROM CLASS TIME
     // "SELECT * FROM products WHERE dept = whocares". function(err, res){
