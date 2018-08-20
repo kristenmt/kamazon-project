@@ -62,41 +62,24 @@ function queryForSale() {
         //function to run after the inquiry
      .then(function(answer){
          //this is what will be pulled from the database and stored in a variable based on customer's answers to questions 1 & 2
-            //var query = "SELECT * FROM products WHERE item_id=?" + answer.quantity;
-           // console.log("stock answer");
-            connection.query("SELECT * FROM products WHERE item_id=?", answer.quantity, function(err, res){
+            connection.query("SELECT * FROM products WHERE item_id=?", answer.askID, function(err, res){
                 for (var i = 0; i < res.length; i++){
-                    if (answer.quantity > res[i].stock_quantity){
+                    var stockQuantity = res[i].stock_quantity;
+                var itemPrice = parseFloat(res[i].price);
+                var userQuantity = (answer.quantity);
+                    if (answer.quantity > stockQuantity){
+                        if (err) throw err;
                         console.log("Sorry, we don't have enough in stock. Please try again.");
-                   // productPurchase();
+                   productPurchase();
                     }
                     else {
                         console.log("Excellent! We can fulfill your order.");
-                        console.log("Your total is: " + res[i].price * answer.quantity + ".");
-                        
-                        
+                        console.log("Your total is: ");
+                        console.log(parseInt(itemPrice) * parseInt(userQuantity));
+                        connection.end();
                     }
                 }
             })
-            //connection.query(query, function(err, res){
-              //  var stockQuantity = res[i].stock_quantity;
-                //var userQuantity = answer.quantity;
-                //console.log("stock answer 2");
-               // if (userQuantity < stockQuantity){
-                 //   for (var i = 0; i < res.length; i++){
-                        
-                   // }
-                    
-                //}
-                //else{
-                  //  console.log("Sorry, we don't have enough in stock. Please try again.");
-                   // productPurchase();
-                //}
-           // })
         });
     }
-    //FROM CLASS TIME
-    // "SELECT * FROM products WHERE dept = whocares". function(err, res){
-        //if (err) throw err;
-        //console.table(res);
     
