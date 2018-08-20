@@ -67,6 +67,7 @@ function queryForSale() {
                     var stockQuantity = res[i].stock_quantity;
                 var itemPrice = parseFloat(res[i].price);
                 var userQuantity = (answer.quantity);
+                var newStock = stockQuantity - userQuantity;
                     if (answer.quantity > stockQuantity){
                         if (err) throw err;
                         console.log("Sorry, we don't have enough in stock. Please try again.");
@@ -76,10 +77,19 @@ function queryForSale() {
                         console.log("Excellent! We can fulfill your order.");
                         console.log("Your total is: ");
                         console.log(parseInt(itemPrice) * parseInt(userQuantity));
+                        connection.query("UPDATE products SET ? WHERE ?",
+                    [
+                        {stock_quantity: newStock},
+                        {id: (answer.askID)}
+                        
+                        
+                    ])
+                    console.log("inventory db updated");
                         connection.end();
                     }
                 }
             })
         });
+        
     }
     
