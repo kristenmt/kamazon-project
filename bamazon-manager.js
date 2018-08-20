@@ -74,3 +74,82 @@ function lowInv(){
         connection.end();
         });
 }
+function updateInv(){
+
+    inquirer
+        .prompt([{
+            //format and ask question to manager--which product
+            name: "askMgrID",
+            type: "input",
+            message: "What is the ID of the product you wish to update?"
+        },
+        {
+            //format and ask question #2 to ask manager--the quantity to add
+            name: "quantityMgr",
+            type: "input",
+            message: "How many units do you wish to add?"
+            
+        }])
+        
+    
+        .then (function(answer){
+    // connection.query("SELECT stock_quantity FROM products WHERE item_id=?", [answer.askMgrID], function(err, res) {
+    //     if (err) throw err;
+    // })
+        connection.query("UPDATE products SET stock_quantity WHERE item_id=?",[(answer.quantityMgr), answer.askMgrID], function(err){
+            //notifies manager update was successfull
+            console.log("Inventory update was successful");
+            
+        //ends the query, restarts the connection
+       connection.end();
+        });
+    });
+ };
+ function addProduct(){
+     inquirer
+     .prompt([
+         {
+             name: "productID",
+             type: "input",
+             message: "What is the product ID number of the item you wish to add?"
+         },
+     {
+         name: "newName",
+         type: "input",
+         message: "What is the name of the product you wish to add?"
+     },
+     {
+         name: "newDept",
+         type: "input",
+         message: "What department is this located in?"
+     },
+     {
+        name: "newPrice",
+        type: "input",
+        message: "What is the price of the product you wish to add?"
+    },
+    {
+        name: "newProdInv",
+        type: "input",
+        message: "How much is in stock of the new product?"
+        }
+        
+    ])
+    .then(function(answer){
+  connection.query("INSERT INTO products SET ?",
+  {
+    item_id: answer.productID,  
+    product_name: answer.newName,
+    department_name: answer.newDept,
+    price: answer.newPrice,
+    stock_quantity: answer.newProdInv
+  },
+  function(err){
+      if (err) throw err;
+      console.log("New product was added to inventory");
+      connection.end();
+  }
+)
+ 
+    })
+}
