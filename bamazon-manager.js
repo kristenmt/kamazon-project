@@ -64,3 +64,13 @@ function totalInv(){
         connection.end();
         });
 }
+function lowInv(){
+    connection.query("SELECT * FROM products WHERE stock_quantity < 5", function(err, res) {
+
+        // shows all items with low inventory in a table format
+        console.table(res);
+        
+        //ends the query, restarts the connection
+        connection.end();
+        });
+}
