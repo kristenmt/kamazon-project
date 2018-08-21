@@ -92,11 +92,11 @@ function updateInv(){
         }])
         
     
-        .then (function(answer){
+        .then(function(answer){
     // connection.query("SELECT stock_quantity FROM products WHERE item_id=?", [answer.askMgrID], function(err, res) {
     //     if (err) throw err;
     // })
-        connection.query("UPDATE products SET stock_quantity WHERE item_id=?",[(answer.quantityMgr), answer.askMgrID], function(err){
+        connection.query("UPDATE products SET stock_quantity = stock_quantity + ? WHERE id = ?", [(answer.quantityMgr), answer.askMgrID], function(err){
             //notifies manager update was successfull
             console.log("Inventory update was successful");
             
